@@ -15,15 +15,10 @@ bool mais_caro(item i, item j)
 {
     return i.valor > j.valor;
 };
-std::vector<item> create_copy(std::vector<item> const &vec)
-{
-    std::vector<item> v;
-    v = vec;
-
-    return v;
-}
 int main()
 {
+
+    
 
     std::vector<item> v;
     int objetos;
@@ -47,66 +42,73 @@ int main()
 
         v.push_back(meu_item);
     }
+    std::default_random_engine generator;
 
-    std::vector<item> v_cp;
-    std::vector<item> mochila;
 
-    v_cp = create_copy(v);
     // std::sort(v.begin(), v.end(), mais_caro); // invariante: elementos ordenados pelo peso
 
-    double peso = 0;
-    double valor = 0;
-    std::vector<int> resposta(pesoMax);
-    int T = 0;
+    for(int p=0; p<10; p++){
 
-    double numero = 0;
-    std::default_random_engine generator;
-    generator.seed(10);
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+        int objetos_c=objetos;
+        vector<item> v_c=v;
+        
+        double peso = 0;
+        double valor = 0;
+        std::vector<item> resposta;
+        int T=0;
+        double numero = 0;
+        // generator.seed(10);
+        std::uniform_real_distribution<double> distribution(0.0, 1.0);
+        
 
-    // if (peso + v[i].peso <= pesoMax)
-    // {
-    //     resposta[T] = v[i].id;
-    //     peso += v[i].peso;
-    //     valor += v[i].valor;
-    //     T += 1;
-    //     objetos--;
-    // }
+        for(int i=0; i<objetos_c; i++){
 
-    for (int i = 0; i <= objetos; i++)
-    {
+            numero = distribution(generator); // gera número
 
-        numero = distribution(generator); // gera número
-        if (numero > 0.5 && i < objetos)
-        {
-            if (peso + v_cp[i].peso <= pesoMax)
-            {
-                item meu_item = {};
-                resposta[T] = v_cp[i].id;
-                peso += v_cp[i].peso;
-                valor += v_cp[i].valor;
-                T += 1;
+            if(numero>0.5 && i<objetos_c){
+                if(peso+v_c[i].peso<=pesoMax){
 
-                meu_item.id = v_cp[i].id;
-                meu_item.peso = v_cp[i].peso;
-                meu_item.valor = v_cp[i].valor;
-
-                mochila.push_back(meu_item);
-
-                v_cp.erase(v_cp.begin() + i);
-                objetos--;
+                    resposta.push_back(v_c[i]);
+                    peso+=v_c[i].peso;
+                    valor+=v_c[i].valor;
+                    T+=1;
+                    v_c.erase(v_c.begin()+i);
+                    objetos_c--;
+                }
+        
             }
+            
+        
+
+            
         }
+
+        for(int i=0; i< objetos; i++ ){
+            if(peso+v_c[i].peso<=pesoMax){
+
+                    resposta.push_back(v_c[i]);
+                    peso+=v_c[i].peso;
+                    valor+=v_c[i].valor;
+                    T+=1;
+                    v_c.erase(v_c.begin()+i);
+                    objetos_c--;
+                }
+
+        }
+
+
+        cout << peso << ", " << valor << ", " << 0 << endl;
+
+        sort(resposta.begin(), resposta.end(), [](auto &i, auto &j)
+            { return i.id < j.id; });
+
+        for (int i = 0; i < T; i++)
+        {
+            cout << resposta[i].id << " ";
+        }
+
+        cout<<endl;
     }
-
-    cout << peso << ", " << valor << ", " << 0 << endl;
-
-    sort(mochila.begin(), mochila.end(), [](auto &i, auto &j)
-         { return i.id < j.id; });
-
-    for (int i = 0; i <= objetos; i++)
-    {
-        cout << mochila[i].id << " ";
-    }
-    return 0;
+        return 0;
+    
 }

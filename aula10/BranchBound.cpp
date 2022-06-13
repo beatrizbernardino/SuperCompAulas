@@ -11,7 +11,7 @@ struct item
     
 };
 
-int num_leaf=0, num_copy=0;
+int num_leaf=0, num_copy=0, num_bounds=0;
 
 double knapSack2(int W, vector<item> items, vector<item>& usados, vector<item>& melhor){
     double valor = 0.0;
@@ -39,8 +39,10 @@ double knapSack2(int W, vector<item> items, vector<item>& usados, vector<item>& 
             
         // se o valor atual + bound <= valor_melhor, não conseguiremos melhorar o valor_melhor
         
-        if (valor_atual+bound<=valor_melhor)  
+        if (valor_atual+bound<=valor_melhor)  {
            return 0;
+           num_bounds++;
+        }
         
         // se o valor_atual + bound tem chance de melhorar
         if(items[0].peso <= W){
@@ -100,7 +102,7 @@ int main() {
     for(auto& el: melhor) {
             cout << el.id << " ";
     }
-    cout<<"\n num_leaf = "<<num_leaf<<"\n num_copy = "<<num_copy<<"\n";
+    cout<<"\n num_leaf = "<<num_leaf<<"\n num_copy = "<<num_copy<<"\n"<<"\n num_bounds = "<<num_bounds<<"\n";
 
     
     return 0;

@@ -10,10 +10,13 @@ struct item
     double peso;
     double valor;
 };
-bool mais_caro(item i, item j)
+bool mais_leve(item i, item j)
 {
-    return i.valor > j.valor;
+    return i.peso < j.peso;
 };
+
+
+
 int main()
 {
 
@@ -24,7 +27,7 @@ int main()
     cin >> objetos;
     cin >> pesoMax;
 
-    for (int i = 0; i <= objetos; i++)
+    for (int i = 0; i < objetos; i++)
     {
         item meu_item;
         double peso;
@@ -40,33 +43,37 @@ int main()
         v.push_back(meu_item);
     }
 
-    std::sort(v.begin(), v.end(), mais_caro); // invariante: elementos ordenados pelo peso
+    std::sort(v.begin(), v.end(), mais_leve); // invariante: elementos ordenados pelo peso
+
 
     double peso = 0;
     double valor = 0;
-    std::vector<int> resposta(pesoMax);
-    int T = 0;
+    std::vector<item> resposta;
+    int T=0;
 
-    for (int i = 0; i <= objetos; i++)
-    {
+    for(int i=0; i<objetos; i++){
 
-        if (peso + v[i].peso <= pesoMax)
-        {
-            resposta[T] = v[i].id;
-            peso += v[i].peso;
-            valor += v[i].valor;
-            T += 1;
+        if(peso+v[i].peso<=pesoMax){
+
+            resposta.push_back(v[i]);
+            peso+=v[i].peso;
+            valor+=v[i].valor;
+            T+=1;
         }
+
+
     }
+
+    
 
     cout << peso << ", " << valor << ", " << 0 << endl;
 
-    sort(v.begin(), v.end(), [](auto &i, auto &j)
-         { return i.id < j.id; });
+    // sort(resposta.begin(), resposta.end(), [](auto &i, auto &j)
+    //      { return i.id < j.id; });
 
-    for (int i = 0; i <= objetos; i++)
+    for (int i = 0; i < T; i++)
     {
-        cout << v[i].id << ", ";
+        cout << resposta[i].id << ", ";
     }
     return 0;
 }

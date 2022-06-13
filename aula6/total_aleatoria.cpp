@@ -45,7 +45,7 @@ int main()
     std::default_random_engine generator;
 
 
-    std::sort(v.begin(), v.end(), mais_caro); // invariante: elementos ordenados pelo peso
+    // std::sort(v.begin(), v.end(), mais_caro); // invariante: elementos ordenados pelo peso
 
     for(int p=0; p<10; p++){
 
@@ -63,33 +63,36 @@ int main()
 
         for(int i=0; i<objetos_c; i++){
 
-            if(peso+v_c[i].peso<=pesoMax){
+            numero = distribution(generator); // gera número
 
-                resposta.push_back(v_c[i]);
-                peso+=v_c[i].peso;
-                valor+=v_c[i].valor;
-                T+=1;
+            if(numero>0.5 && i<objetos_c){
+                if(peso+v_c[i].peso<=pesoMax){
+
+                    resposta.push_back(v_c[i]);
+                    peso+=v_c[i].peso;
+                    valor+=v_c[i].valor;
+                    T+=1;
+                }
+        
             }
+            
         
 
-            numero = distribution(generator); // gera número
             // cout<<numero<<endl<<endl;
-            if (numero > 0.75 && i < objetos_c)
-            {
-                uniform_int_distribution<int> distributionInt(i,objetos_c-1);
-                int a = distributionInt(generator);
+            // if (numero > 0.75 && i < objetos_c)
+            // {
 
-                if (peso + v_c[a].peso <= pesoMax)
-                {
-                    resposta.push_back(v_c[a]);
-                    peso += v_c[a].peso;
-                    valor += v_c[a].valor;
-                    T += 1;
+            //     if (peso + v_c.back().peso <= pesoMax)
+            //     {
+            //         resposta.push_back(v_c.back());
+            //         peso += v_c.back().peso;
+            //         valor += v_c.back().valor;
+            //         T += 1;
 
-                    v_c.erase(v_c.begin()+a);
-                    objetos_c--;
-                }
-            }
+            //         v_c.erase(v_c.end());
+            //         objetos_c--;
+            //     }
+            // }
         }
 
         cout << peso << ", " << valor << ", " << 0 << endl;

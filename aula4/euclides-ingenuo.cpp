@@ -4,6 +4,23 @@
 
 typedef std::vector<std::vector<double>> matriz;
 
+
+void calcula_distancias_otimizado(matriz &mat, std::vector<double> &x, std::vector<double> &y)
+{
+    int n = x.size();
+    std::vector<double> linha;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            double dx = x[i] - x[j];
+            double dy = y[i] - y[j];
+            linha.push_back((dx * dx + dy * dy));
+        }
+    }
+    mat.push_back(linha);
+}
+
 void calcula_distancias(matriz &mat, std::vector<double> &x, std::vector<double> &y)
 {
     int n = x.size();
@@ -53,7 +70,9 @@ int main()
         y.push_back(yt);
     }
 
+    calcula_distancias_otimizado(mat, x, y);
     calcula_distancias(mat, x, y);
+
 
     for (auto &linha : mat)
     {
